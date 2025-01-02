@@ -1,20 +1,18 @@
-# Bookmarks App
+# Notes App
 
-A simple and efficient Bookmarks application built with [NestJS](https://nestjs.com/), providing RESTful API endpoints to manage your bookmarks.
+A simple and efficient Bookmarks application built with [NestJS](https://nestjs.com/), providing RESTful API endpoints to manage your notes.
 
 ## Features
 
-<!-- - **User Authentication:** Secure user registration and login using JWT authentication.
-- **Bookmark Management:** Create, read, update, and delete bookmarks.
-- **Categorization:** Organize bookmarks into categories.
-- **Search and Filtering:** Find bookmarks by title, URL, or tags. -->
+<!-- - **User Authentication:** Secure user registration and login using JWT authentication. -->
+- **Notes:** Create, read, update, and delete notes.
 
 ## Tech Stack
 
-<!-- - **Backend Framework:** [NestJS](https://nestjs.com/)
-- **Database:** PostgreSQL (via TypeORM or Prisma ORM)
-- **Authentication:** JWT (JSON Web Token)
-- **Environment Management:** [dotenv](https://www.npmjs.com/package/dotenv) -->
+- **Backend Framework:** [NestJS](https://nestjs.com/)
+- **Database:** PostgreSQL (via Prisma ORM)
+<!-- - **Authentication:** JWT (JSON Web Token) -->
+<!-- - **Environment Management:** [dotenv](https://www.npmjs.com/package/dotenv) -->
 
 ## Installation
 
@@ -30,7 +28,7 @@ A simple and efficient Bookmarks application built with [NestJS](https://nestjs.
 
    ```bash
    git clone https://github.com/SdxCoder/nestjs.git
-   cd 01.bookmarks
+   cd 01.notes
    ```
 
 2. Install dependencies:
@@ -40,23 +38,19 @@ A simple and efficient Bookmarks application built with [NestJS](https://nestjs.
    # or
    yarn install
    ```
-<!-- 
+
 3. Set up environment variables:
 
    Create a `.env` file in the root directory and configure the following variables:
 
    ```env
-   DATABASE_URL=postgresql://username:password@localhost:5432/bookmarks
-   JWT_SECRET=your_secret_key
-   PORT=3000
+   DATABASE_URL=postgresql://username:password@localhost:5432/notesdb
    ```
 
 4. Run database migrations (if using an ORM):
 
    ```bash
    npx prisma migrate dev
-   # or for TypeORM
-   npm run typeorm migration:run
    ```
 
 5. Start the application:
@@ -67,6 +61,7 @@ A simple and efficient Bookmarks application built with [NestJS](https://nestjs.
 
 6. Access the API at `http://localhost:3000`.
 
+<!-- 
 ## API Documentation
 
 The API is documented using Swagger. After starting the app, visit:
