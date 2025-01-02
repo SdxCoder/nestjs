@@ -1,17 +1,17 @@
 import { Injectable } from "@nestjs/common";
+import { DatabaseService } from "src/database/database.service";
 
-interface IAuthService {
-    login(): string;
-    signup(): string;
-}
+
 
 @Injectable()
-export class AuthService implements IAuthService {
-    login(): string {
+export class AuthService {
+
+    constructor(private db: DatabaseService) { }
+
+    login() {
         return 'This is login';
     }
-    signup(): string {
+    signup() {
         return 'this is signup';
     }
-
 }
