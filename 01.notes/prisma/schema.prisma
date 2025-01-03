@@ -24,6 +24,8 @@ model User {
   createdAt DateTime @default(now())
   updateAt  DateTime @updatedAt
   notes     Note[]
+
+  @@map("users")
 }
 
 model Note {
@@ -37,4 +39,6 @@ model Note {
 
   createdAt DateTime @default(now())
   updateAt  DateTime @updatedAt
+
+  @@map("notes")
 }

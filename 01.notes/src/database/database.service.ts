@@ -5,8 +5,7 @@ import { PrismaClient } from "@prisma/client";
 @Injectable()
 export class DatabaseService extends PrismaClient {
     constructor() {
-        // TODO: Load from .en
-        let databaseUrl: string = '';
+        const databaseUrl: string = process.env.DATABASE_URL;
         super({
             datasources: {
                 db: {
