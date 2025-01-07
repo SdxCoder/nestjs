@@ -4,10 +4,20 @@ import { UserModule } from './user/user.module';
 import { NotesModule } from './notes/notes.module';
 import { DatabaseModule } from './database/database.module';
 import { ConfigModule } from '@nestjs/config';
+import { JwtModule } from '@nestjs/jwt';
 
 
 @Module({
-  imports: [ConfigModule.forRoot({ isGlobal: true }), AuthModule, UserModule, NotesModule, DatabaseModule],
+  imports: [
+    ConfigModule.forRoot({ isGlobal: true }),
+    JwtModule.register({
+      global: true,
+    }),
+    AuthModule,
+    UserModule,
+    NotesModule,
+    DatabaseModule,
+  ],
 })
 export class AppModule {
 }

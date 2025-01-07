@@ -1,8 +1,8 @@
-import { IsString, IsStrongPassword, MinLength } from "class-validator";
+import { IsString } from "class-validator";
 
 export class LoginDto {
     @IsString()
     readonly email: string;
-    @IsStrongPassword()
+    @IsString()
     readonly password: string;
 }
