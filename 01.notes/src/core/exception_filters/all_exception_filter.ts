@@ -1,37 +1,44 @@
 import { ArgumentsHost, Catch, ExceptionFilter, HttpException, HttpStatus, } from "@nestjs/common";
-import { Request, Response } from "express";
-import { CustomHttpExceptionResponse, HttpExceptionResponse } from "./models";
+import { CustomHttpExceptionResponse, HttpExceptionResponse, ValidationResponse } from "./models";
+import { BaseExceptionFilter, HttpAdapterHost } from "@nestjs/core";
+
+
+
 @Catch()
 export class HttpExceptionFilter implements ExceptionFilter {
+    constructor(private readonly httpAdapterHost: HttpAdapterHost) { }
     catch(exception: any, host: ArgumentsHost) {
+        const { httpAdapter } = this.httpAdapterHost;
         const ctx = host.switchToHttp();
-        const response = ctx.getResponse<Response>();
-        const request = ctx.getRequest<Request>();
+        const response = ctx.getResponse();
+        const request = ctx.getRequest();
 
         let status: HttpStatus;
-        let message: string;
+        let error: string | string[];
 
         if (exception instanceof HttpException) {
             status = exception.getStatus();
             const errorResponse = exception.getResponse();
-            message = (errorResponse as HttpExceptionResponse).error || exception.message;
+            error = (errorResponse as any).message || (errorResponse as HttpExceptionResponse).error || exception.message;
         }
         else {
             status = HttpStatus.INTERNAL_SERVER_ERROR;
-            message = "Critical server error has occured."
+            error = "Critical server error has occured."
         }
 
-        const errorResponse = this.getHttpErrorResponse(status, message, request);
-        response.status(status).json(errorResponse);
+        const method = httpAdapter.getRequestMethod(request);
+        const path = httpAdapter.getRequestUrl(request);
+        const errorResponse = this.getHttpErrorResponse(status, error, method, path);
+        httpAdapter.reply(response, errorResponse, status);
     }
 
-    getHttpErrorResponse(status: HttpStatus, message: string, request: Request): CustomHttpExceptionResponse {
+    getHttpErrorResponse(status: HttpStatus, error: string | string[], method: string, path: string): CustomHttpExceptionResponse {
         return (
             {
-                error: message,
                 statusCode: status,
-                path: request.url,
-                method: request.method,
+                error: error,
+                method: method,
+                path: path,
                 timestamp: new Date(),
             }
         );
