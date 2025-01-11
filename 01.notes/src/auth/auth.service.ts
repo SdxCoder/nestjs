@@ -17,21 +17,10 @@ export class AuthService {
 
     async login(dto: LoginDto): Promise<AuthResponse> {
         try {
-            // Find user by email
-            const user = await this.db.user.findUnique({
-                where: { email: dto.email }
-            });
-            // If user not found throw exception
+            const user = await this.validateUser(dto.email, dto.password);
             if (!user) {
-                const error: HttpExceptionResponse = { statusCode: HttpStatus.NOT_FOUND, error: 'No user found for this email.' }
+                const error: HttpExceptionResponse = { statusCode: HttpStatus.UNAUTHORIZED, error: 'Invalid email or password.' }
                 throw new HttpException(error, HttpStatus.UNAUTHORIZED);
-            }
-            // If user found compare password hash
-            const match = await verify(user.hash, dto.password);
-            // If hash doesn't matches throw exception
-            if (!match) {
-                const error: HttpExceptionResponse = { statusCode: HttpStatus.FORBIDDEN, error: 'Invalid Credentials.' }
-                throw new HttpException(error, HttpStatus.FORBIDDEN);
             }
             const accessToken = await this.signJwtToken(user.id, user.email);
             return {
@@ -70,11 +59,26 @@ export class AuthService {
         }
     }
 
+    async validateUser(email: string, password: string): Promise<any> {
+        const user = await this.db.user.findUnique({
+            where: { email: email }
+        });
+        if (!user) {
+            return null;
+        }
+        const match = await verify(user.hash, password);
+        if (!match) {
+            return null;
+        }
+        return user;
+    }
 
-    signJwtToken(userId: string, email: string): Promise<string> {
+
+    private signJwtToken(userId: string, email: string): Promise<string> {
         const payload = { sub: userId, email: email };
         return this.jwtService.signAsync(payload, {
-            secret: this.config.get('JWT_SECRET')
+            secret: this.config.get('JWT_SECRET'),
+            expiresIn: '30s',
         });
     }
 }

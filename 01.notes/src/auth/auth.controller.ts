@@ -1,8 +1,9 @@
-import { Body, Controller, Post, ValidationPipe } from "@nestjs/common";
+import { Body, Controller, Get, Post, UseGuards, ValidationPipe } from "@nestjs/common";
 import { AuthService } from "./auth.service";
 import { AuthDto } from "./dtos";
 import { LoginDto } from "./dtos/login.dto";
 import { AuthResponse } from "./models";
+import { JwtAuthGaurd } from "./guards";
 
 
 @Controller('auth')
@@ -17,5 +18,12 @@ export class AuthController {
     @Post('signup')
     signup(@Body() authDto: AuthDto): Promise<AuthResponse> {
         return this.authService.signup(authDto);
+    }
+
+
+    @UseGuards(JwtAuthGaurd)
+    @Get('profile')
+    getProfile() {
+        return { user: "This is a test user." }
     }
 }
