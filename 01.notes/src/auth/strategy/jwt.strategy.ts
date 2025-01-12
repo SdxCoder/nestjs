@@ -7,7 +7,7 @@ import { DatabaseService } from "src/database/database.service";
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
 
-    constructor(private config: ConfigService, private db: DatabaseService) {
+    constructor(config: ConfigService, private db: DatabaseService) {
         super({
             jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
             ignoreElements: true,
@@ -22,6 +22,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         if (!user) {
             throw new UnauthorizedException();
         }
+        delete user.hash;
         return user;
     }
 };

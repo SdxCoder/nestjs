@@ -1,5 +1,5 @@
 import { ArgumentsHost, Catch, ExceptionFilter, HttpException, HttpStatus, } from "@nestjs/common";
-import { CustomHttpExceptionResponse, HttpExceptionResponse, ValidationResponse } from "./models";
+import { CustomHttpExceptionResponse, HttpExceptionResponse } from "./models";
 import { BaseExceptionFilter, HttpAdapterHost } from "@nestjs/core";
 
 
@@ -15,6 +15,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
 
         let status: HttpStatus;
         let error: string | string[];
+        console.log(exception);
 
         if (exception instanceof HttpException) {
             status = exception.getStatus();

@@ -19,11 +19,4 @@ export class AuthController {
     signup(@Body() authDto: AuthDto): Promise<AuthResponse> {
         return this.authService.signup(authDto);
     }
-
-
-    @UseGuards(JwtAuthGaurd)
-    @Get('profile')
-    getProfile() {
-        return { user: "This is a test user." }
-    }
 }

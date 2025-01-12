@@ -9,9 +9,3 @@ export interface CustomHttpExceptionResponse extends HttpExceptionResponse {
     method: string,
     timestamp: Date
 }
-
-export interface ValidationResponse {
-    response: {
-        message: string | string[];
-    };
-}
